@@ -46941,7 +46941,790 @@ function (XYZ) {
 
 var _default = OSM;
 exports.default = _default;
-},{"./XYZ.js":"node_modules/ol/source/XYZ.js"}],"index.js":[function(require,module,exports) {
+},{"./XYZ.js":"node_modules/ol/source/XYZ.js"}],"node_modules/ol/style/IconAnchorUnits.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+/**
+ * @module ol/style/IconAnchorUnits
+ */
+
+/**
+ * Icon anchor units. One of 'fraction', 'pixels'.
+ * @enum {string}
+ */
+var _default = {
+  FRACTION: 'fraction',
+  PIXELS: 'pixels'
+};
+exports.default = _default;
+},{}],"node_modules/ol/style/IconImage.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.get = get;
+exports.default = void 0;
+
+var _dom = require("../dom.js");
+
+var _events = require("../events.js");
+
+var _Target = _interopRequireDefault(require("../events/Target.js"));
+
+var _EventType = _interopRequireDefault(require("../events/EventType.js"));
+
+var _ImageState = _interopRequireDefault(require("../ImageState.js"));
+
+var _IconImageCache = require("./IconImageCache.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * @module ol/style/IconImage
+ */
+var IconImage =
+/*@__PURE__*/
+function (EventTarget) {
+  function IconImage(image, src, size, crossOrigin, imageState, color) {
+    EventTarget.call(this);
+    /**
+     * @private
+     * @type {HTMLImageElement|HTMLCanvasElement}
+     */
+
+    this.hitDetectionImage_ = null;
+    /**
+     * @private
+     * @type {HTMLImageElement|HTMLCanvasElement}
+     */
+
+    this.image_ = !image ? new Image() : image;
+
+    if (crossOrigin !== null) {
+      /** @type {HTMLImageElement} */
+      this.image_.crossOrigin = crossOrigin;
+    }
+    /**
+     * @private
+     * @type {HTMLCanvasElement}
+     */
+
+
+    this.canvas_ = color ?
+    /** @type {HTMLCanvasElement} */
+    document.createElement('canvas') : null;
+    /**
+     * @private
+     * @type {import("../color.js").Color}
+     */
+
+    this.color_ = color;
+    /**
+     * @private
+     * @type {Array<import("../events.js").EventsKey>}
+     */
+
+    this.imageListenerKeys_ = null;
+    /**
+     * @private
+     * @type {import("../ImageState.js").default}
+     */
+
+    this.imageState_ = imageState;
+    /**
+     * @private
+     * @type {import("../size.js").Size}
+     */
+
+    this.size_ = size;
+    /**
+     * @private
+     * @type {string|undefined}
+     */
+
+    this.src_ = src;
+    /**
+     * @private
+     * @type {boolean|undefined}
+     */
+
+    this.tainted_;
+  }
+
+  if (EventTarget) IconImage.__proto__ = EventTarget;
+  IconImage.prototype = Object.create(EventTarget && EventTarget.prototype);
+  IconImage.prototype.constructor = IconImage;
+  /**
+   * @private
+   * @return {boolean} The image canvas is tainted.
+   */
+
+  IconImage.prototype.isTainted_ = function isTainted_() {
+    if (this.tainted_ === undefined && this.imageState_ === _ImageState.default.LOADED) {
+      this.tainted_ = false;
+      var context = (0, _dom.createCanvasContext2D)(1, 1);
+
+      try {
+        context.drawImage(this.image_, 0, 0);
+        context.getImageData(0, 0, 1, 1);
+      } catch (e) {
+        this.tainted_ = true;
+      }
+    }
+
+    return this.tainted_ === true;
+  };
+  /**
+   * @private
+   */
+
+
+  IconImage.prototype.dispatchChangeEvent_ = function dispatchChangeEvent_() {
+    this.dispatchEvent(_EventType.default.CHANGE);
+  };
+  /**
+   * @private
+   */
+
+
+  IconImage.prototype.handleImageError_ = function handleImageError_() {
+    this.imageState_ = _ImageState.default.ERROR;
+    this.unlistenImage_();
+    this.dispatchChangeEvent_();
+  };
+  /**
+   * @private
+   */
+
+
+  IconImage.prototype.handleImageLoad_ = function handleImageLoad_() {
+    this.imageState_ = _ImageState.default.LOADED;
+
+    if (this.size_) {
+      this.image_.width = this.size_[0];
+      this.image_.height = this.size_[1];
+    }
+
+    this.size_ = [this.image_.width, this.image_.height];
+    this.unlistenImage_();
+    this.replaceColor_();
+    this.dispatchChangeEvent_();
+  };
+  /**
+   * @param {number} pixelRatio Pixel ratio.
+   * @return {HTMLImageElement|HTMLCanvasElement} Image or Canvas element.
+   */
+
+
+  IconImage.prototype.getImage = function getImage(pixelRatio) {
+    return this.canvas_ ? this.canvas_ : this.image_;
+  };
+  /**
+   * @return {import("../ImageState.js").default} Image state.
+   */
+
+
+  IconImage.prototype.getImageState = function getImageState() {
+    return this.imageState_;
+  };
+  /**
+   * @param {number} pixelRatio Pixel ratio.
+   * @return {HTMLImageElement|HTMLCanvasElement} Image element.
+   */
+
+
+  IconImage.prototype.getHitDetectionImage = function getHitDetectionImage(pixelRatio) {
+    if (!this.hitDetectionImage_) {
+      if (this.isTainted_()) {
+        var width = this.size_[0];
+        var height = this.size_[1];
+        var context = (0, _dom.createCanvasContext2D)(width, height);
+        context.fillRect(0, 0, width, height);
+        this.hitDetectionImage_ = context.canvas;
+      } else {
+        this.hitDetectionImage_ = this.image_;
+      }
+    }
+
+    return this.hitDetectionImage_;
+  };
+  /**
+   * @return {import("../size.js").Size} Image size.
+   */
+
+
+  IconImage.prototype.getSize = function getSize() {
+    return this.size_;
+  };
+  /**
+   * @return {string|undefined} Image src.
+   */
+
+
+  IconImage.prototype.getSrc = function getSrc() {
+    return this.src_;
+  };
+  /**
+   * Load not yet loaded URI.
+   */
+
+
+  IconImage.prototype.load = function load() {
+    if (this.imageState_ == _ImageState.default.IDLE) {
+      this.imageState_ = _ImageState.default.LOADING;
+      this.imageListenerKeys_ = [(0, _events.listenOnce)(this.image_, _EventType.default.ERROR, this.handleImageError_, this), (0, _events.listenOnce)(this.image_, _EventType.default.LOAD, this.handleImageLoad_, this)];
+
+      try {
+        /** @type {HTMLImageElement} */
+        this.image_.src = this.src_;
+      } catch (e) {
+        this.handleImageError_();
+      }
+    }
+  };
+  /**
+   * @private
+   */
+
+
+  IconImage.prototype.replaceColor_ = function replaceColor_() {
+    if (!this.color_ || this.isTainted_()) {
+      return;
+    }
+
+    this.canvas_.width = this.image_.width;
+    this.canvas_.height = this.image_.height;
+    var ctx = this.canvas_.getContext('2d');
+    ctx.drawImage(this.image_, 0, 0);
+    var imgData = ctx.getImageData(0, 0, this.image_.width, this.image_.height);
+    var data = imgData.data;
+    var r = this.color_[0] / 255.0;
+    var g = this.color_[1] / 255.0;
+    var b = this.color_[2] / 255.0;
+
+    for (var i = 0, ii = data.length; i < ii; i += 4) {
+      data[i] *= r;
+      data[i + 1] *= g;
+      data[i + 2] *= b;
+    }
+
+    ctx.putImageData(imgData, 0, 0);
+  };
+  /**
+   * Discards event handlers which listen for load completion or errors.
+   *
+   * @private
+   */
+
+
+  IconImage.prototype.unlistenImage_ = function unlistenImage_() {
+    this.imageListenerKeys_.forEach(_events.unlistenByKey);
+    this.imageListenerKeys_ = null;
+  };
+
+  return IconImage;
+}(_Target.default);
+/**
+ * @param {HTMLImageElement|HTMLCanvasElement} image Image.
+ * @param {string} src Src.
+ * @param {import("../size.js").Size} size Size.
+ * @param {?string} crossOrigin Cross origin.
+ * @param {import("../ImageState.js").default} imageState Image state.
+ * @param {import("../color.js").Color} color Color.
+ * @return {IconImage} Icon image.
+ */
+
+
+function get(image, src, size, crossOrigin, imageState, color) {
+  var iconImage = _IconImageCache.shared.get(src, crossOrigin, color);
+
+  if (!iconImage) {
+    iconImage = new IconImage(image, src, size, crossOrigin, imageState, color);
+
+    _IconImageCache.shared.set(src, crossOrigin, color, iconImage);
+  }
+
+  return iconImage;
+}
+
+var _default = IconImage;
+exports.default = _default;
+},{"../dom.js":"node_modules/ol/dom.js","../events.js":"node_modules/ol/events.js","../events/Target.js":"node_modules/ol/events/Target.js","../events/EventType.js":"node_modules/ol/events/EventType.js","../ImageState.js":"node_modules/ol/ImageState.js","./IconImageCache.js":"node_modules/ol/style/IconImageCache.js"}],"node_modules/ol/style/IconOrigin.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+/**
+ * @module ol/style/IconOrigin
+ */
+
+/**
+ * Icon origin. One of 'bottom-left', 'bottom-right', 'top-left', 'top-right'.
+ * @enum {string}
+ */
+var _default = {
+  BOTTOM_LEFT: 'bottom-left',
+  BOTTOM_RIGHT: 'bottom-right',
+  TOP_LEFT: 'top-left',
+  TOP_RIGHT: 'top-right'
+};
+exports.default = _default;
+},{}],"node_modules/ol/style/Icon.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _util = require("../util.js");
+
+var _ImageState = _interopRequireDefault(require("../ImageState.js"));
+
+var _asserts = require("../asserts.js");
+
+var _color = require("../color.js");
+
+var _events = require("../events.js");
+
+var _EventType = _interopRequireDefault(require("../events/EventType.js"));
+
+var _IconAnchorUnits = _interopRequireDefault(require("./IconAnchorUnits.js"));
+
+var _IconImage = require("./IconImage.js");
+
+var _IconOrigin = _interopRequireDefault(require("./IconOrigin.js"));
+
+var _Image = _interopRequireDefault(require("./Image.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * @module ol/style/Icon
+ */
+
+/**
+ * @typedef {Object} Options
+ * @property {Array<number>} [anchor=[0.5, 0.5]] Anchor. Default value is the icon center.
+ * @property {import("./IconOrigin.js").default} [anchorOrigin] Origin of the anchor: `bottom-left`, `bottom-right`,
+ * `top-left` or `top-right`. Default is `top-left`.
+ * @property {import("./IconAnchorUnits.js").default} [anchorXUnits] Units in which the anchor x value is
+ * specified. A value of `'fraction'` indicates the x value is a fraction of the icon. A value of `'pixels'` indicates
+ * the x value in pixels. Default is `'fraction'`.
+ * @property {import("./IconAnchorUnits.js").default} [anchorYUnits] Units in which the anchor y value is
+ * specified. A value of `'fraction'` indicates the y value is a fraction of the icon. A value of `'pixels'` indicates
+ * the y value in pixels. Default is `'fraction'`.
+ * @property {import("../color.js").Color|string} [color] Color to tint the icon. If not specified,
+ * the icon will be left as is.
+ * @property {null|string} [crossOrigin] The `crossOrigin` attribute for loaded images. Note that you must provide a
+ * `crossOrigin` value if you are using the WebGL renderer or if you want to access pixel data with the Canvas renderer.
+ * See https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image for more detail.
+ * @property {HTMLImageElement|HTMLCanvasElement} [img] Image object for the icon. If the `src` option is not provided then the
+ * provided image must already be loaded. And in that case, it is required
+ * to provide the size of the image, with the `imgSize` option.
+ * @property {Array<number>} [offset=[0, 0]] Offset, which, together with the size and the offset origin, define the
+ * sub-rectangle to use from the original icon image.
+ * @property {import("./IconOrigin.js").default} [offsetOrigin] Origin of the offset: `bottom-left`, `bottom-right`,
+ * `top-left` or `top-right`. Default is `top-left`.
+ * @property {number} [opacity=1] Opacity of the icon.
+ * @property {number} [scale=1] Scale.
+ * @property {boolean} [rotateWithView=false] Whether to rotate the icon with the view.
+ * @property {number} [rotation=0] Rotation in radians (positive rotation clockwise).
+ * @property {import("../size.js").Size} [size] Icon size in pixel. Can be used together with `offset` to define the
+ * sub-rectangle to use from the origin (sprite) icon image.
+ * @property {import("../size.js").Size} [imgSize] Image size in pixels. Only required if `img` is set and `src` is not, and
+ * for SVG images in Internet Explorer 11. The provided `imgSize` needs to match the actual size of the image.
+ * @property {string} [src] Image source URI.
+ */
+
+/**
+ * @classdesc
+ * Set icon style for vector features.
+ * @api
+ */
+var Icon =
+/*@__PURE__*/
+function (ImageStyle) {
+  function Icon(opt_options) {
+    var options = opt_options || {};
+    /**
+     * @type {number}
+     */
+
+    var opacity = options.opacity !== undefined ? options.opacity : 1;
+    /**
+     * @type {number}
+     */
+
+    var rotation = options.rotation !== undefined ? options.rotation : 0;
+    /**
+     * @type {number}
+     */
+
+    var scale = options.scale !== undefined ? options.scale : 1;
+    /**
+     * @type {boolean}
+     */
+
+    var rotateWithView = options.rotateWithView !== undefined ? options.rotateWithView : false;
+    ImageStyle.call(this, {
+      opacity: opacity,
+      rotation: rotation,
+      scale: scale,
+      rotateWithView: rotateWithView
+    });
+    /**
+     * @private
+     * @type {Array<number>}
+     */
+
+    this.anchor_ = options.anchor !== undefined ? options.anchor : [0.5, 0.5];
+    /**
+     * @private
+     * @type {Array<number>}
+     */
+
+    this.normalizedAnchor_ = null;
+    /**
+     * @private
+     * @type {import("./IconOrigin.js").default}
+     */
+
+    this.anchorOrigin_ = options.anchorOrigin !== undefined ? options.anchorOrigin : _IconOrigin.default.TOP_LEFT;
+    /**
+     * @private
+     * @type {import("./IconAnchorUnits.js").default}
+     */
+
+    this.anchorXUnits_ = options.anchorXUnits !== undefined ? options.anchorXUnits : _IconAnchorUnits.default.FRACTION;
+    /**
+     * @private
+     * @type {import("./IconAnchorUnits.js").default}
+     */
+
+    this.anchorYUnits_ = options.anchorYUnits !== undefined ? options.anchorYUnits : _IconAnchorUnits.default.FRACTION;
+    /**
+     * @private
+     * @type {?string}
+     */
+
+    this.crossOrigin_ = options.crossOrigin !== undefined ? options.crossOrigin : null;
+    /**
+     * @type {HTMLImageElement|HTMLCanvasElement}
+     */
+
+    var image = options.img !== undefined ? options.img : null;
+    /**
+     * @type {import("../size.js").Size}
+     */
+
+    var imgSize = options.imgSize !== undefined ? options.imgSize : null;
+    /**
+     * @type {string|undefined}
+     */
+
+    var src = options.src;
+    (0, _asserts.assert)(!(src !== undefined && image), 4); // `image` and `src` cannot be provided at the same time
+
+    (0, _asserts.assert)(!image || image && imgSize, 5); // `imgSize` must be set when `image` is provided
+
+    if ((src === undefined || src.length === 0) && image) {
+      src =
+      /** @type {HTMLImageElement} */
+      image.src || (0, _util.getUid)(image);
+    }
+
+    (0, _asserts.assert)(src !== undefined && src.length > 0, 6); // A defined and non-empty `src` or `image` must be provided
+
+    /**
+     * @type {import("../ImageState.js").default}
+     */
+
+    var imageState = options.src !== undefined ? _ImageState.default.IDLE : _ImageState.default.LOADED;
+    /**
+     * @private
+     * @type {import("../color.js").Color}
+     */
+
+    this.color_ = options.color !== undefined ? (0, _color.asArray)(options.color) : null;
+    /**
+     * @private
+     * @type {import("./IconImage.js").default}
+     */
+
+    this.iconImage_ = (0, _IconImage.get)(image,
+    /** @type {string} */
+    src, imgSize, this.crossOrigin_, imageState, this.color_);
+    /**
+     * @private
+     * @type {Array<number>}
+     */
+
+    this.offset_ = options.offset !== undefined ? options.offset : [0, 0];
+    /**
+     * @private
+     * @type {import("./IconOrigin.js").default}
+     */
+
+    this.offsetOrigin_ = options.offsetOrigin !== undefined ? options.offsetOrigin : _IconOrigin.default.TOP_LEFT;
+    /**
+     * @private
+     * @type {Array<number>}
+     */
+
+    this.origin_ = null;
+    /**
+     * @private
+     * @type {import("../size.js").Size}
+     */
+
+    this.size_ = options.size !== undefined ? options.size : null;
+  }
+
+  if (ImageStyle) Icon.__proto__ = ImageStyle;
+  Icon.prototype = Object.create(ImageStyle && ImageStyle.prototype);
+  Icon.prototype.constructor = Icon;
+  /**
+   * Clones the style. The underlying Image/HTMLCanvasElement is not cloned.
+   * @return {Icon} The cloned style.
+   * @api
+   */
+
+  Icon.prototype.clone = function clone() {
+    return new Icon({
+      anchor: this.anchor_.slice(),
+      anchorOrigin: this.anchorOrigin_,
+      anchorXUnits: this.anchorXUnits_,
+      anchorYUnits: this.anchorYUnits_,
+      crossOrigin: this.crossOrigin_,
+      color: this.color_ && this.color_.slice ? this.color_.slice() : this.color_ || undefined,
+      src: this.getSrc(),
+      offset: this.offset_.slice(),
+      offsetOrigin: this.offsetOrigin_,
+      size: this.size_ !== null ? this.size_.slice() : undefined,
+      opacity: this.getOpacity(),
+      scale: this.getScale(),
+      rotation: this.getRotation(),
+      rotateWithView: this.getRotateWithView()
+    });
+  };
+  /**
+   * @inheritDoc
+   * @api
+   */
+
+
+  Icon.prototype.getAnchor = function getAnchor() {
+    if (this.normalizedAnchor_) {
+      return this.normalizedAnchor_;
+    }
+
+    var anchor = this.anchor_;
+    var size = this.getSize();
+
+    if (this.anchorXUnits_ == _IconAnchorUnits.default.FRACTION || this.anchorYUnits_ == _IconAnchorUnits.default.FRACTION) {
+      if (!size) {
+        return null;
+      }
+
+      anchor = this.anchor_.slice();
+
+      if (this.anchorXUnits_ == _IconAnchorUnits.default.FRACTION) {
+        anchor[0] *= size[0];
+      }
+
+      if (this.anchorYUnits_ == _IconAnchorUnits.default.FRACTION) {
+        anchor[1] *= size[1];
+      }
+    }
+
+    if (this.anchorOrigin_ != _IconOrigin.default.TOP_LEFT) {
+      if (!size) {
+        return null;
+      }
+
+      if (anchor === this.anchor_) {
+        anchor = this.anchor_.slice();
+      }
+
+      if (this.anchorOrigin_ == _IconOrigin.default.TOP_RIGHT || this.anchorOrigin_ == _IconOrigin.default.BOTTOM_RIGHT) {
+        anchor[0] = -anchor[0] + size[0];
+      }
+
+      if (this.anchorOrigin_ == _IconOrigin.default.BOTTOM_LEFT || this.anchorOrigin_ == _IconOrigin.default.BOTTOM_RIGHT) {
+        anchor[1] = -anchor[1] + size[1];
+      }
+    }
+
+    this.normalizedAnchor_ = anchor;
+    return this.normalizedAnchor_;
+  };
+  /**
+   * Set the anchor point. The anchor determines the center point for the
+   * symbolizer.
+   *
+   * @param {Array<number>} anchor Anchor.
+   * @api
+   */
+
+
+  Icon.prototype.setAnchor = function setAnchor(anchor) {
+    this.anchor_ = anchor;
+    this.normalizedAnchor_ = null;
+  };
+  /**
+   * Get the icon color.
+   * @return {import("../color.js").Color} Color.
+   * @api
+   */
+
+
+  Icon.prototype.getColor = function getColor() {
+    return this.color_;
+  };
+  /**
+   * Get the image icon.
+   * @param {number} pixelRatio Pixel ratio.
+   * @return {HTMLImageElement|HTMLCanvasElement} Image or Canvas element.
+   * @override
+   * @api
+   */
+
+
+  Icon.prototype.getImage = function getImage(pixelRatio) {
+    return this.iconImage_.getImage(pixelRatio);
+  };
+  /**
+   * @override
+   */
+
+
+  Icon.prototype.getImageSize = function getImageSize() {
+    return this.iconImage_.getSize();
+  };
+  /**
+   * @override
+   */
+
+
+  Icon.prototype.getHitDetectionImageSize = function getHitDetectionImageSize() {
+    return this.getImageSize();
+  };
+  /**
+   * @override
+   */
+
+
+  Icon.prototype.getImageState = function getImageState() {
+    return this.iconImage_.getImageState();
+  };
+  /**
+   * @override
+   */
+
+
+  Icon.prototype.getHitDetectionImage = function getHitDetectionImage(pixelRatio) {
+    return this.iconImage_.getHitDetectionImage(pixelRatio);
+  };
+  /**
+   * @inheritDoc
+   * @api
+   */
+
+
+  Icon.prototype.getOrigin = function getOrigin() {
+    if (this.origin_) {
+      return this.origin_;
+    }
+
+    var offset = this.offset_;
+
+    if (this.offsetOrigin_ != _IconOrigin.default.TOP_LEFT) {
+      var size = this.getSize();
+      var iconImageSize = this.iconImage_.getSize();
+
+      if (!size || !iconImageSize) {
+        return null;
+      }
+
+      offset = offset.slice();
+
+      if (this.offsetOrigin_ == _IconOrigin.default.TOP_RIGHT || this.offsetOrigin_ == _IconOrigin.default.BOTTOM_RIGHT) {
+        offset[0] = iconImageSize[0] - size[0] - offset[0];
+      }
+
+      if (this.offsetOrigin_ == _IconOrigin.default.BOTTOM_LEFT || this.offsetOrigin_ == _IconOrigin.default.BOTTOM_RIGHT) {
+        offset[1] = iconImageSize[1] - size[1] - offset[1];
+      }
+    }
+
+    this.origin_ = offset;
+    return this.origin_;
+  };
+  /**
+   * Get the image URL.
+   * @return {string|undefined} Image src.
+   * @api
+   */
+
+
+  Icon.prototype.getSrc = function getSrc() {
+    return this.iconImage_.getSrc();
+  };
+  /**
+   * @inheritDoc
+   * @api
+   */
+
+
+  Icon.prototype.getSize = function getSize() {
+    return !this.size_ ? this.iconImage_.getSize() : this.size_;
+  };
+  /**
+   * @override
+   */
+
+
+  Icon.prototype.listenImageChange = function listenImageChange(listener, thisArg) {
+    return (0, _events.listen)(this.iconImage_, _EventType.default.CHANGE, listener, thisArg);
+  };
+  /**
+   * Load not yet loaded URI.
+   * When rendering a feature with an icon style, the vector renderer will
+   * automatically call this method. However, you might want to call this
+   * method yourself for preloading or other purposes.
+   * @override
+   * @api
+   */
+
+
+  Icon.prototype.load = function load() {
+    this.iconImage_.load();
+  };
+  /**
+   * @override
+   */
+
+
+  Icon.prototype.unlistenImageChange = function unlistenImageChange(listener, thisArg) {
+    (0, _events.unlisten)(this.iconImage_, _EventType.default.CHANGE, listener, thisArg);
+  };
+
+  return Icon;
+}(_Image.default);
+
+var _default = Icon;
+exports.default = _default;
+},{"../util.js":"node_modules/ol/util.js","../ImageState.js":"node_modules/ol/ImageState.js","../asserts.js":"node_modules/ol/asserts.js","../color.js":"node_modules/ol/color.js","../events.js":"node_modules/ol/events.js","../events/EventType.js":"node_modules/ol/events/EventType.js","./IconAnchorUnits.js":"node_modules/ol/style/IconAnchorUnits.js","./IconImage.js":"node_modules/ol/style/IconImage.js","./IconOrigin.js":"node_modules/ol/style/IconOrigin.js","./Image.js":"node_modules/ol/style/Image.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _Map = _interopRequireDefault(require("ol/Map.js"));
@@ -46964,6 +47747,10 @@ var _Vector = _interopRequireDefault(require("ol/layer/Vector"));
 
 var _Vector2 = _interopRequireDefault(require("ol/source/Vector"));
 
+var _Style = _interopRequireDefault(require("ol/style/Style"));
+
+var _Icon = _interopRequireDefault(require("ol/style/Icon"));
+
 var _Projection = _interopRequireDefault(require("ol/proj/Projection"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -46974,7 +47761,7 @@ var map = new _Map.default({
     center: [0, 0],
     zoom: 2,
     minZoom: 2,
-    maxZoom: 10 //extent: [minx,miny,maxx,maxy],
+    maxZoom: 10 //extent: ol.proj.get('EPSG:3857').getExtent(),
 
   }),
   layers: [new _Tile.default({
@@ -47008,6 +47795,16 @@ function addMarker(place) {
     long: place.long,
     lat: place.lat
   });
+  var style = new _Style.default({
+    image: new _Icon.default({
+      anchor: [0, 0],
+      anchorXUnits: 'fraction',
+      anchorYUnits: 'pixels',
+      scale: 0.05,
+      src: 'https://cdn3.iconfinder.com/data/icons/map-markers-2/512/marker_2-512.png'
+    })
+  });
+  marker.setStyle(style);
   vectorSource.addFeature(marker);
 }
 
@@ -47068,7 +47865,7 @@ document.getElementById("webCheck").addEventListener("change", updateMap, false)
 document.getElementById("mobileCheck").addEventListener("change", updateMap, false);
 document.getElementById("menuDisplayButton").addEventListener("click", toggleMenu, false);
 document.getElementById("cardExitIcon").addEventListener("click", hideCard, false);
-},{"ol/Map.js":"node_modules/ol/Map.js","ol/View.js":"node_modules/ol/View.js","ol/coordinate.js":"node_modules/ol/coordinate.js","ol/layer/Tile.js":"node_modules/ol/layer/Tile.js","ol/proj.js":"node_modules/ol/proj.js","ol/source/OSM.js":"node_modules/ol/source/OSM.js","ol/Feature":"node_modules/ol/Feature.js","ol/geom/Point":"node_modules/ol/geom/Point.js","ol/layer/Vector":"node_modules/ol/layer/Vector.js","ol/source/Vector":"node_modules/ol/source/Vector.js","ol/proj/Projection":"node_modules/ol/proj/Projection.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"ol/Map.js":"node_modules/ol/Map.js","ol/View.js":"node_modules/ol/View.js","ol/coordinate.js":"node_modules/ol/coordinate.js","ol/layer/Tile.js":"node_modules/ol/layer/Tile.js","ol/proj.js":"node_modules/ol/proj.js","ol/source/OSM.js":"node_modules/ol/source/OSM.js","ol/Feature":"node_modules/ol/Feature.js","ol/geom/Point":"node_modules/ol/geom/Point.js","ol/layer/Vector":"node_modules/ol/layer/Vector.js","ol/source/Vector":"node_modules/ol/source/Vector.js","ol/style/Style":"node_modules/ol/style/Style.js","ol/style/Icon":"node_modules/ol/style/Icon.js","ol/proj/Projection":"node_modules/ol/proj/Projection.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -47095,7 +47892,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50728" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58274" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
