@@ -104,79 +104,56 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   // Override the current require with this new one
   return newRequire;
-})({"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
-var bundleURL = null;
-
-function getBundleURLCached() {
-  if (!bundleURL) {
-    bundleURL = getBundleURL();
-  }
-
-  return bundleURL;
-}
-
-function getBundleURL() {
-  // Attempt to find the URL of the current script and use that as the base URL
-  try {
-    throw new Error();
-  } catch (err) {
-    var matches = ('' + err.stack).match(/(https?|file|ftp):\/\/[^)\n]+/g);
-
-    if (matches) {
-      return getBaseURL(matches[0]);
-    }
-  }
-
-  return '/';
-}
-
-function getBaseURL(url) {
-  return ('' + url).replace(/^((?:https?|file|ftp):\/\/.+)\/[^/]+$/, '$1') + '/';
-}
-
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-},{}],"node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
-var bundle = require('./bundle-url');
-
-function updateLink(link) {
-  var newLink = link.cloneNode();
-
-  newLink.onload = function () {
-    link.remove();
-  };
-
-  newLink.href = link.href.split('?')[0] + '?' + Date.now();
-  link.parentNode.insertBefore(newLink, link.nextSibling);
-}
-
-var cssTimeout = null;
-
-function reloadCSS() {
-  if (cssTimeout) {
-    return;
-  }
-
-  cssTimeout = setTimeout(function () {
-    var links = document.querySelectorAll('link[rel="stylesheet"]');
-
-    for (var i = 0; i < links.length; i++) {
-      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
-        updateLink(links[i]);
-      }
-    }
-
-    cssTimeout = null;
-  }, 50);
-}
-
-module.exports = reloadCSS;
-},{"./bundle-url":"node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"index.css":[function(require,module,exports) {
-var reloadCSS = require('_css_loader');
-
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+})({"places.json":[function(require,module,exports) {
+module.exports = placesList = {
+  "Places": [{
+    "name": "Unalakleet, Alaska",
+    "long": -160.799927,
+    "lat": 63.889515,
+    "web": true,
+    "mobile": false,
+    "continent": "NA",
+    "years": [2011],
+    "accomplishments": ["Helped the Bering Strait School District plan the evolution of their custom-built student information system to a community-supported open-source project. After interviewing many stakeholders, they made major improvements to the system’s user-interface and functionality.", "Packaged the student information system in a way that potential collaborators could download and evaluate the system. This is a critical step toward attracting a community of users and developers interested in sustaining  the system as an open-source project."]
+  }, {
+    "name": "Peru",
+    "long": -77.042793,
+    "lat": -12.046374,
+    "web": false,
+    "mobile": true,
+    "continent": "SA",
+    "years": [2012],
+    "accomplishments": ["Helped the school to develop a new web site based on the open source Joomla content management system.", "Researched leadership transition planning and presented findings to the family that runs the schools to facilitate their discussion."]
+  }, {
+    "name": "Ghana",
+    "long": 0.21972222,
+    "lat": 5.75972222,
+    "web": false,
+    "mobile": true,
+    "continent": "AF",
+    "years": [2008],
+    "accomplishments": ["Helped Ashesi to define the requirements for an automated student records management system, research and evaluate open source and commercial alternatives, and choose a system to adopt.", "Worked with staff to define an implementation plan, and create training materials."]
+  }, {
+    "name": "Chile",
+    "long": -73.2511,
+    "lat": -39.8073,
+    "web": false,
+    "mobile": true,
+    "continent": "SA",
+    "years": [2006],
+    "accomplishments": ["​Wrote a business plan to provide technology consulting services to the region."]
+  }, {
+    "name": "Rwanda",
+    "long": 29.8739,
+    "lat": 1.9403,
+    "web": false,
+    "mobile": true,
+    "continent": "AF",
+    "years": [2011, 2012, 2017],
+    "accomplishments": ["​(2011) Completed the full setup of three computer labs, including hardware, networks, and software.", "(2012) Performed systematic user testing of a new intranet and provided user interface recommendations to improve it. Developed an alumni database to track graduates.", "(2012 - Manumetal)  Designed and helped Manumetal implement a way to bridge their local area networks, researched and implemented a customer relationship management system to replace their paper and spreadsheet-based system.", "(2012- Sopywra) Improved internal communication by implementing an instant messaging system."]
+  }]
+};
+},{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -345,4 +322,4 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.parcelRequire, id);
   });
 }
-},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js"], null)
+},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","places.json"], null)
