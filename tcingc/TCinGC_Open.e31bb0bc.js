@@ -50276,7 +50276,7 @@ function processTags(tags, toAdd) {
 function processTagsHTML(tags) {
   for (var tag in tags) {
     document.getElementById("tagCheckBoxes").innerHTML += '<input type="checkbox" value="' + tag + '" class="controlCheckBox" id="' + tag + 'Check" checked="true">\
-<p class=" controlCheckBoxText">' + tag + ' Project</p><br>';
+<p class=" controlCheckBoxText">' + tag.charAt(0).toUpperCase() + tag.slice(1) + ' Project</p><br>';
   }
 }
 
@@ -50434,7 +50434,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49218" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61439" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
