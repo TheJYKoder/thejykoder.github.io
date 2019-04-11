@@ -50250,25 +50250,45 @@ var map = new _Map.default({
   target: 'map'
 });
 
-function Place(name, long, lat, web, mobile, continent, years, accom) {
+function Place(name, long, lat, tags, continent, years, accom) {
   this.name = name;
   this.long = long;
   this.lat = lat;
-  this.web = web;
-  this.mobile = mobile;
+  this.tags = tags;
   this.continent = continent;
   this.years = years;
   this.accom = accom;
 }
 
 var places = [];
+var tagDictionary = {};
 
-for (var i = 0; i < placesList.Places.length; i++) {
-  places.push(new Place(placesList.Places[i].name, placesList.Places[i].long, placesList.Places[i].lat, placesList.Places[i].web, placesList.Places[i].mobile, placesList.Places[i].continent, placesList.Places[i].years, placesList.Places[i].accomplishments));
+function processTags(tags, toAdd) {
+  tags.forEach(function (s) {
+    if (s in tagDictionary) {
+      tagDictionary[s].push(toAdd);
+    } else {
+      tagDictionary[s] = [toAdd];
+    }
+  });
 }
 
+function processTagsHTML(tags) {
+  for (var tag in tags) {
+    document.getElementById("tagCheckBoxes").innerHTML += '<input type="checkbox" value="' + tag + '" class="controlCheckBox" id="' + tag + 'Check" checked="true">\
+<p class=" controlCheckBoxText">' + tag + ' Project</p><br>';
+  }
+}
+
+for (var i = 0; i < placesList.Places.length; i++) {
+  var toAdd = new Place(placesList.Places[i].name, placesList.Places[i].long, placesList.Places[i].lat, placesList.Places[i].tags, placesList.Places[i].continent, placesList.Places[i].years, placesList.Places[i].accomplishments);
+  processTags(placesList.Places[i].tags, toAdd);
+  places.push(toAdd);
+}
+
+processTagsHTML(tagDictionary);
+
 function addMarker(place) {
-  console.log(place.continent);
   var marker = new _Feature.default({
     geometry: new _Point.default((0, _proj.fromLonLat)([place.long, place.lat])),
     name: place.name,
@@ -50294,15 +50314,22 @@ for (var i = 0; i < places.length; i++) {
   addMarker(places[i]);
 }
 
+function getChecked(tag) {
+  return document.getElementById(tag + "Check").checked;
+}
+
 function updateMap() {
   vectorSource.clear();
 
-  for (var i = 0; i < places.length; i++) {
-    var web = places[i].web && document.getElementById("webCheck").checked;
-    var mobile = places[i].mobile && document.getElementById("mobileCheck").checked;
+  for (var tag in tagDictionary) {
+    if (getChecked(tag)) {
+      for (var i = 0; i < places.length; i++) {
+        console.log(tag in places[i].tags);
 
-    if (web || mobile) {
-      addMarker(places[i]);
+        if (places[i].tags.includes(tag)) {
+          addMarker(places[i]);
+        }
+      }
     }
   }
 }
@@ -50316,10 +50343,20 @@ map.on('click', function (e) {
       center: coords,
       zoom: 6
     });
-    displayCard();
     updateCard(f.name, f.accom, f.years);
+    displayCard();
   });
 });
+
+function toggleMenu() {
+  var x = document.getElementById("menu");
+
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
 
 function displayCard() {
   document.getElementById("infoCard").style.display = "block";
@@ -50350,19 +50387,26 @@ function updateCard(name, accom, years) {
   document.getElementById("infoAccom").innerHTML += "</ul>";
 }
 
-document.getElementById("cardExitIcon").addEventListener("click", hideCard, false);
-document.getElementById("webCheck").addEventListener("change", updateMap, false);
-document.getElementById("mobileCheck").addEventListener("change", updateMap, false);
-var slider = document.getElementById('yearSlider');
+function reset() {
+  map.getView().animate({
+    center: [0, 0],
+    zoom: 2
+  });
+  hideCard();
+}
 
-_nouislider.default.create(slider, {
-  start: [2009, 2011],
-  connect: true,
-  range: {
-    'min': 2007,
-    'max': 2013
+function processBinds(tags) {
+  for (var tag in tags) {
+    document.getElementById(tag + "Check").addEventListener("change", updateMap, false);
   }
-});
+} //document.getElementById("webCheck").addEventListener("change", updateMap, false);
+//document.getElementById("mobileCheck").addEventListener("change", updateMap, false);*/
+
+
+processBinds(tagDictionary);
+document.getElementById("menuDisplayButton").addEventListener("click", toggleMenu, false);
+document.getElementById("cardExitIcon").addEventListener("click", hideCard, false);
+document.getElementById("resetDisplayButton").addEventListener("click", reset, false);
 },{"ol/Map.js":"node_modules/ol/Map.js","ol/View.js":"node_modules/ol/View.js","ol/coordinate.js":"node_modules/ol/coordinate.js","ol/layer/Tile.js":"node_modules/ol/layer/Tile.js","ol/proj.js":"node_modules/ol/proj.js","ol/source/OSM.js":"node_modules/ol/source/OSM.js","ol/Feature":"node_modules/ol/Feature.js","ol/geom/Point":"node_modules/ol/geom/Point.js","ol/layer/Vector":"node_modules/ol/layer/Vector.js","ol/source/Vector":"node_modules/ol/source/Vector.js","ol/style/Style":"node_modules/ol/style/Style.js","ol/style/Icon":"node_modules/ol/style/Icon.js","ol/proj/Projection":"node_modules/ol/proj/Projection.js","nouislider":"node_modules/nouislider/distribute/nouislider.js","/icons/NA_Marker.png":"icons/NA_Marker.png","/icons/SA_Marker.png":"icons/SA_Marker.png","/icons/AF_Marker.png":"icons/AF_Marker.png"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -50390,7 +50434,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59964" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49218" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

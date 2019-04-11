@@ -110,8 +110,7 @@ module.exports = placesList = {
     "name": "Unalakleet, Alaska",
     "long": -160.799927,
     "lat": 63.889515,
-    "web": true,
-    "mobile": false,
+    "tags": ["web"],
     "continent": "NA",
     "years": [2011],
     "accomplishments": ["Helped the Bering Strait School District plan the evolution of their custom-built student information system to a community-supported open-source project. After interviewing many stakeholders, they made major improvements to the system’s user-interface and functionality.", "Packaged the student information system in a way that potential collaborators could download and evaluate the system. This is a critical step toward attracting a community of users and developers interested in sustaining  the system as an open-source project."]
@@ -119,8 +118,7 @@ module.exports = placesList = {
     "name": "Peru",
     "long": -77.042793,
     "lat": -12.046374,
-    "web": false,
-    "mobile": true,
+    "tags": ["mobile"],
     "continent": "SA",
     "years": [2012],
     "accomplishments": ["Helped the school to develop a new web site based on the open source Joomla content management system.", "Researched leadership transition planning and presented findings to the family that runs the schools to facilitate their discussion."]
@@ -128,8 +126,7 @@ module.exports = placesList = {
     "name": "Ghana",
     "long": 0.21972222,
     "lat": 5.75972222,
-    "web": false,
-    "mobile": true,
+    "tags": ["mobile"],
     "continent": "AF",
     "years": [2008],
     "accomplishments": ["Helped Ashesi to define the requirements for an automated student records management system, research and evaluate open source and commercial alternatives, and choose a system to adopt.", "Worked with staff to define an implementation plan, and create training materials."]
@@ -137,8 +134,7 @@ module.exports = placesList = {
     "name": "Chile",
     "long": -73.2511,
     "lat": -39.8073,
-    "web": false,
-    "mobile": true,
+    "tags": ["mobile"],
     "continent": "SA",
     "years": [2006],
     "accomplishments": ["​Wrote a business plan to provide technology consulting services to the region."]
@@ -146,8 +142,7 @@ module.exports = placesList = {
     "name": "Rwanda",
     "long": 29.8739,
     "lat": 1.9403,
-    "web": false,
-    "mobile": true,
+    "tags": ["mobile"],
     "continent": "AF",
     "years": [2011, 2012, 2017],
     "accomplishments": ["​(2011) Completed the full setup of three computer labs, including hardware, networks, and software.", "(2012) Performed systematic user testing of a new intranet and provided user interface recommendations to improve it. Developed an alumni database to track graduates.", "(2012 - Manumetal)  Designed and helped Manumetal implement a way to bridge their local area networks, researched and implemented a customer relationship management system to replace their paper and spreadsheet-based system.", "(2012- Sopywra) Improved internal communication by implementing an instant messaging system."]
@@ -180,7 +175,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59964" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49218" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
