@@ -113,7 +113,7 @@ module.exports = placesList = {
     "tags": ["web"],
     "continent": "NA",
     "years": [2011],
-    "accomplishments": ["Helped the Bering Strait School District plan the evolution of their custom-built student information system to a community-supported open-source project. After interviewing many stakeholders, they made major improvements to the system’s user-interface and functionality.", "Packaged the student information system in a way that potential collaborators could download and evaluate the system. This is a critical step toward attracting a community of users and developers interested in sustaining  the system as an open-source project."]
+    "accomplishments": [[2011, "Helped the Bering Strait School District plan the evolution of their custom-built student information system to a community-supported open-source project. After interviewing many stakeholders, they made major improvements to the system’s user-interface and functionality."], [2011, "Packaged the student information system in a way that potential collaborators could download and evaluate the system. This is a critical step toward attracting a community of users and developers interested in sustaining  the system as an open-source project."]]
   }, {
     "name": "Peru",
     "long": -77.042793,
@@ -121,7 +121,7 @@ module.exports = placesList = {
     "tags": ["mobile"],
     "continent": "SA",
     "years": [2012],
-    "accomplishments": ["Helped the school to develop a new web site based on the open source Joomla content management system.", "Researched leadership transition planning and presented findings to the family that runs the schools to facilitate their discussion."]
+    "accomplishments": [[2012, "Helped the school to develop a new web site based on the open source Joomla content management system."], [2012, "Researched leadership transition planning and presented findings to the family that runs the schools to facilitate their discussion."]]
   }, {
     "name": "Ghana",
     "long": 0.21972222,
@@ -129,7 +129,7 @@ module.exports = placesList = {
     "tags": ["mobile"],
     "continent": "AF",
     "years": [2008],
-    "accomplishments": ["Helped Ashesi to define the requirements for an automated student records management system, research and evaluate open source and commercial alternatives, and choose a system to adopt.", "Worked with staff to define an implementation plan, and create training materials."]
+    "accomplishments": [[2008, "Helped Ashesi to define the requirements for an automated student records management system, research and evaluate open source and commercial alternatives, and choose a system to adopt."], [2008, "Worked with staff to define an implementation plan, and create training materials."]]
   }, {
     "name": "Chile",
     "long": -73.2511,
@@ -137,7 +137,7 @@ module.exports = placesList = {
     "tags": ["mobile"],
     "continent": "SA",
     "years": [2006],
-    "accomplishments": ["​Wrote a business plan to provide technology consulting services to the region."]
+    "accomplishments": [[2006, "​Wrote a business plan to provide technology consulting services to the region."]]
   }, {
     "name": "Rwanda",
     "long": 29.8739,
@@ -145,7 +145,7 @@ module.exports = placesList = {
     "tags": ["mobile"],
     "continent": "AF",
     "years": [2011, 2012, 2017],
-    "accomplishments": ["​(2011) Completed the full setup of three computer labs, including hardware, networks, and software.", "(2012) Performed systematic user testing of a new intranet and provided user interface recommendations to improve it. Developed an alumni database to track graduates.", "(2012 - Manumetal)  Designed and helped Manumetal implement a way to bridge their local area networks, researched and implemented a customer relationship management system to replace their paper and spreadsheet-based system.", "(2012- Sopywra) Improved internal communication by implementing an instant messaging system."]
+    "accomplishments": [[2011, "Completed the full setup of three computer labs, including hardware, networks, and software."], [2012, "Performed systematic user testing of a new intranet and provided user interface recommendations to improve it. Developed an alumni database to track graduates."], [2012, "Manumetal-Designed and helped Manumetal implement a way to bridge their local area networks, researched and implemented a customer relationship management system to replace their paper and spreadsheet-based system."], [2012, "Sopywra-Improved internal communication by implementing an instant messaging system."]]
   }]
 };
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -175,7 +175,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61439" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60401" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

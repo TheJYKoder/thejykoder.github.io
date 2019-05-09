@@ -1,0 +1,69 @@
+* { 
+	padding: 0; 
+	margin: 0; 
+}
+
+html {
+	height: 100%;
+}
+
+body {
+	font-size: 12px;
+	width: 100%;
+	height: 100%;
+	background-color: #E4D2BA;
+}
+
+#map {
+	height: 800px;
+	width: 1000px;
+	border: 1px black solid;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+	margin-top: 2.5%;
+}
+
+.infoPanel {
+	height: 60vh;
+}
+
+.infoNav {
+	font-size: 2em;
+}
+
+#infoNavDiv {
+	display: none;
+}
+
+#infoYear {
+	text-align: center;
+	font-size: 1.5em;
+}
+
+#infoDesc {
+	
+}
+
+.cardName {
+	font-size: 2em;
+	text-align: center;
+}
+
+.cardImage {
+	width:  100%;
+	height: 30vh;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.cardButton {
+	padding: 0.5em;
+	width: 7.5vw;
+	font-size: 1.5em;
+}
+
+.controlTitle {
+
+}

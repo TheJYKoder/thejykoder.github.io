@@ -47831,7 +47831,9 @@ module.exports = "/SA_Marker.5120eb16.png";
 module.exports = "/AF_Marker.024cc983.png";
 },{}],"images/stock.webp":[function(require,module,exports) {
 module.exports = "/stock.3ee55215.webp";
-},{}],"index.js":[function(require,module,exports) {
+},{}],"images/cmu.png":[function(require,module,exports) {
+module.exports = "/cmu.12b594be.png";
+},{}],"js/index.js":[function(require,module,exports) {
 "use strict";
 
 var _Map = _interopRequireDefault(require("ol/Map.js"));
@@ -47874,6 +47876,8 @@ var _AF_Marker = _interopRequireDefault(require("/icons/AF_Marker.png"));
 
 var _stock = _interopRequireDefault(require("/images/stock.webp"));
 
+var _cmu = _interopRequireDefault(require("/images/cmu.png"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var vectorSource = new _Vector2.default({});
@@ -47914,7 +47918,7 @@ map.setView(new _View.default({
   zoom: 2
 }));
 
-function Place(name, long, lat, tags, continent, years, accom) {
+function Place(name, long, lat, tags, continent, years, accom, aList) {
   this.name = name;
   this.long = long;
   this.lat = lat;
@@ -47922,6 +47926,12 @@ function Place(name, long, lat, tags, continent, years, accom) {
   this.continent = continent;
   this.years = years;
   this.accomDict = accom;
+  this.aList = aList;
+}
+
+function Info(year, accom) {
+  this.year = year;
+  this.accom = accom;
 }
 
 var places = [];
@@ -47939,22 +47949,25 @@ function processTags(tags, toAdd) {
 
 function processTagsHTML(tags) {
   for (var tag in tags) {
-    document.getElementById("tagCheckBoxes").innerHTML += '<input type="checkbox" value="' + tag + '" class="controlCheckBox" id="' + tag + 'Check" checked="true">\
-<p class=" controlCheckBoxText">' + tag.charAt(0).toUpperCase() + tag.slice(1) + ' Project</p><br>';
+    document.getElementById("tagCheckBoxes").innerHTML += '<label><input type="checkbox" id="' + tag + 'Check" checked="checked"/><span>' + tag.charAt(0).toUpperCase() + tag.slice(1) + '</span></label><br>';
   }
 }
 
 for (var i = 0; i < placesList.Places.length; i++) {
   var dictForYears = {};
+  var aList = [];
   placesList.Places[i].accomplishments.forEach(function (s) {
     if (s[0] in dictForYears) {
       dictForYears[s[0]].push(s[1]);
     } else {
       dictForYears[s[0]] = [s[1]];
     }
+
+    aList.push(new Info(s[0], s[1]));
   });
-  var toAdd = new Place(placesList.Places[i].name, placesList.Places[i].long, placesList.Places[i].lat, placesList.Places[i].tags, placesList.Places[i].continent, placesList.Places[i].years, dictForYears);
+  var toAdd = new Place(placesList.Places[i].name, placesList.Places[i].long, placesList.Places[i].lat, placesList.Places[i].tags, placesList.Places[i].continent, placesList.Places[i].years, dictForYears, aList);
   processTags(placesList.Places[i].tags, toAdd);
+  console.log(aList);
   places.push(toAdd);
 }
 
@@ -47965,7 +47978,7 @@ function addMarker(place) {
     geometry: new _Point.default( //Try to take out long and lat and use this
     (0, _proj.fromLonLat)([place.long, place.lat])),
     name: place.name,
-    accomDict: place.accomDict,
+    aList: place.aList,
     long: place.long,
     lat: place.lat
   });
@@ -47980,43 +47993,6 @@ function addMarker(place) {
   });
   marker.setStyle(style);
   vectorSource.addFeature(marker);
-}
-
-function buildCard(name, yearDict) {
-  var card = document.getElementById("infoCard"); //The Header
-
-  document.getElementById("cardName").innerHTML = name; //The Image
-
-  document.getElementById("cardImage").src = _stock.default; //Year List
-
-  var yearList = "";
-  var list = Object.keys(yearDict);
-
-  for (var i = 0; i < list.length; i++) {
-    yearList += '<li><a href="#" class="cardYear">' + list[i] + '</a></li>';
-  }
-
-  document.getElementById("yearList").innerHTML = yearList; //Info Divs
-
-  Object.keys(yearDict).forEach(function (s) {
-    card.innerHTML += '<div><ol>';
-    yearDict[s].forEach(function (s2) {
-      card.innerHTML += '<li>' + s2 + '</li>';
-    });
-    card.innerHTML += '</ol></div>';
-  }); //Adds back to map functionality
-
-  var backToMapButtonClass = document.getElementsByClassName("backToMapButton");
-
-  function reset() {
-    map.getView().animate({
-      center: [0, 0],
-      zoom: 2
-    });
-    hideCard();
-  }
-
-  backToMapButtonClass[0].addEventListener("click", reset, false);
 }
 
 for (var i = 0; i < places.length; i++) {
@@ -48043,37 +48019,50 @@ function updateMap() {
   }
 }
 
+var infoCounter = 0;
+var infoList = [];
+
+function updateCard(name, aList, stockImg) {
+  document.getElementById("cardName").innerHTML = name;
+  document.getElementById("cardImage").src = stockImg;
+  infoCounter = -1;
+  infoList = aList;
+  navRight();
+  document.getElementById("infoNavDiv").style.display = "block";
+
+  if (aList.length == 1) {
+    document.getElementById("infoNavDiv").style.display = "none";
+  }
+}
+
+function navRight() {
+  infoCounter = (infoCounter + 1) % infoList.length;
+  var yearCounter = infoList[infoCounter].year;
+  yearCounter += " (" + (infoCounter + 1) + "/" + infoList.length + ")";
+  document.getElementById("infoYear").innerHTML = yearCounter;
+  document.getElementById("infoDesc").innerHTML = infoList[infoCounter].accom;
+}
+
+function navLeft() {
+  infoCounter = (infoCounter - 1) % infoList.length;
+  document.getElementById("infoYear").innerHTML = infoList[infoCounter].year;
+  document.getElementById("infoDesc").innerHTML = infoList[infoCounter].accom;
+}
+
+document.getElementById("navLeft").addEventListener("click", navLeft);
+document.getElementById("navRight").addEventListener("click", navRight);
 map.on('click', function (e) {
   var markup = '';
   map.forEachFeatureAtPixel(e.pixel, function (feature) {
     var f = feature.getProperties();
     var coords = (0, _proj.fromLonLat)([f.long, f.lat]);
-    buildCard(f.name, f.accomDict);
+    updateCard(f.name, f.aList, _stock.default);
     map.getView().animate({
       center: coords,
       zoom: 6
     });
-    displayCard();
   });
 });
-
-function toggleMenu() {
-  var x = document.getElementById("menu");
-
-  if (x.style.display === "none") {
-    x.style.display = "block";
-  } else {
-    x.style.display = "none";
-  }
-}
-
-function displayCard() {
-  document.getElementById("infoCard").style.display = "block";
-}
-
-function hideCard() {
-  document.getElementById("infoCard").style.display = "none";
-}
 
 function processBinds(tags) {
   for (var tag in tags) {
@@ -48081,9 +48070,16 @@ function processBinds(tags) {
   }
 }
 
+function reset() {
+  map.getView().animate({
+    center: [0, 0],
+    zoom: 2
+  });
+}
+
+document.getElementById("backToMapButton").addEventListener("click", reset);
 processBinds(tagDictionary);
-document.getElementById("menuDisplayButton").addEventListener("click", toggleMenu, false);
-},{"ol/Map.js":"node_modules/ol/Map.js","ol/View.js":"node_modules/ol/View.js","ol/coordinate.js":"node_modules/ol/coordinate.js","ol/layer/Tile.js":"node_modules/ol/layer/Tile.js","ol/proj.js":"node_modules/ol/proj.js","ol/source/OSM.js":"node_modules/ol/source/OSM.js","ol/Feature":"node_modules/ol/Feature.js","ol/geom/Point":"node_modules/ol/geom/Point.js","ol/layer/Vector":"node_modules/ol/layer/Vector.js","ol/source/Vector":"node_modules/ol/source/Vector.js","ol/style/Style":"node_modules/ol/style/Style.js","ol/style/Icon":"node_modules/ol/style/Icon.js","ol/proj/Projection":"node_modules/ol/proj/Projection.js","ol/control/ZoomToExtent":"node_modules/ol/control/ZoomToExtent.js","ol/interaction/Interaction":"node_modules/ol/interaction/Interaction.js","ol/interaction.js":"node_modules/ol/interaction.js","/icons/NA_Marker.png":"icons/NA_Marker.png","/icons/SA_Marker.png":"icons/SA_Marker.png","/icons/AF_Marker.png":"icons/AF_Marker.png","/images/stock.webp":"images/stock.webp"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"ol/Map.js":"node_modules/ol/Map.js","ol/View.js":"node_modules/ol/View.js","ol/coordinate.js":"node_modules/ol/coordinate.js","ol/layer/Tile.js":"node_modules/ol/layer/Tile.js","ol/proj.js":"node_modules/ol/proj.js","ol/source/OSM.js":"node_modules/ol/source/OSM.js","ol/Feature":"node_modules/ol/Feature.js","ol/geom/Point":"node_modules/ol/geom/Point.js","ol/layer/Vector":"node_modules/ol/layer/Vector.js","ol/source/Vector":"node_modules/ol/source/Vector.js","ol/style/Style":"node_modules/ol/style/Style.js","ol/style/Icon":"node_modules/ol/style/Icon.js","ol/proj/Projection":"node_modules/ol/proj/Projection.js","ol/control/ZoomToExtent":"node_modules/ol/control/ZoomToExtent.js","ol/interaction/Interaction":"node_modules/ol/interaction/Interaction.js","ol/interaction.js":"node_modules/ol/interaction.js","/icons/NA_Marker.png":"icons/NA_Marker.png","/icons/SA_Marker.png":"icons/SA_Marker.png","/icons/AF_Marker.png":"icons/AF_Marker.png","/images/stock.webp":"images/stock.webp","/images/cmu.png":"images/cmu.png"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -48110,7 +48106,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56968" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60401" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
@@ -48252,5 +48248,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.parcelRequire, id);
   });
 }
-},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.js"], null)
-//# sourceMappingURL=/TCinGC_Open.e31bb0bc.map
+},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/index.js"], null)
+//# sourceMappingURL=/js.00a46daa.map
