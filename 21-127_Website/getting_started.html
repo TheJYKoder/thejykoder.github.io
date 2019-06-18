@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>21-127 Latex Guide</title>
+	<title>21-127/21-128/15-151 Latex Guide</title>
 	 <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
     <!-- Compiled and minified JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script type="text/javascript">
+		  $(document).ready(function(){
+		    $('.collapsible').collapsible();
+		  }); 
+    </script>
+	<script async src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
 </head>
 <body>
-	<h1 class="center">21-127 Latex Guide</h1>
+	<h1 class="center">$$\textrm{21-127/21-128/15-151}\ \LaTeX\ \textrm{Guide}$$ </h1>
 	<nav>
 	    <div class="nav-wrapper">
 	      <ul id="nav-mobile" class="left hide-on-med-and-down">
@@ -20,6 +28,82 @@
 	    </div>
   	</nav>
   	<div>
+  		<div class="row">
+  			<h2 class="center pageTitle">Getting Started</h2>
+  			<p class="pageText">If you do want to go through the trouble of setting up a local environment for LaTeX, <a href="https://www.overleaf.com/" target="_blank">Overleaf</a> is a great option for you. As Carnegie Mellon students, you can enjoy the Professional account for free, including up to 2,000 project storage and full document history.</p>
+  			<p class="pageText">If you do want to install LaTeX locally, you will need:</p>
+  			<ul>
+  				<li class="pageText" style="list-style-type: square; margin-left: 7.5vw;">A text editor to create a LaTeX document (we’ll be using the freeware Texmaker)</li>
+  				<li class="pageText" style="list-style-type: square; margin-left: 7.5vw;">A LaTeX compiler (we'll be using MiKTeX)</li>
+  			</ul>
+  		</div>
+  		<ul class="collapsible">
+		    <li>
+		      <div class="collapsible-header">Windows (Texmaker + MikTeX)</div>
+		      <div class="collapsible-body">
+		      	<h6 class="instruction_header">Downloading and installing MiKTeX for Windows</h6>
+		      	<ol class="instruction_list">
+		      		<li>Go to <a href="https://miktex.org/download" target="_blank">https://miktex.org/download</a></li>
+		      		<li>After choosing “Windows,” click the Download button under “Installer”</li>
+		      		<li>Now click <strong>Save File</strong> when the popup window opens</li>
+		      		<li>Find where the file was saved and double click on it</li>
+		      		<li>Windows will ask "Unknown publisher, install anyway?". Click <strong>run</strong></li>
+		      		<li>The Setup wizard will now open.  Click the box to accept the MiKTeX copying conditions. Then click <strong>Next</strong></li>
+		      		<img src="images/install_windows6.png" class="instruction_img">
+		      		<li>Click <strong>Anyone who uses this computer (all users)</strong>, then click <strong>Next</strong></li>
+		      		<img src="images/install_windows7.png" class="instruction_img">
+		      		<li>Feel free to change the default installation address, but you will need that address for future environment setup. After finished, click <strong>Next</strong></li>
+		      		<img src="images/install_windows8.png" class="instruction_img">
+		      		<li>Feel free to change preferred paper, then click <strong>Next</strong></li>
+		      		<img src="images/install_windows9.png" class="instruction_img">
+		      		<li>Click <strong>Start</strong> to being the install process</li>
+		      		<img src="images/install_windows10.png" class="instruction_img">
+		      		<li>Click <strong>Close</strong> once the installation is complete</li>
+		      	</ol>
+		      	<h6 class="instruction_header">Now you are ready to download the text editor, Texmaker for Windows</h6>
+		      	<ol class="instruction_list">
+		      		<li>Go to <a href="http://www.xm1math.net/texmaker/download.html" target="_blank">http://www.xm1math.net/texmaker/download.html</a></li>
+		      		<li>Now click under the appropriate platform.  If you are using windows, click on Executable file for win64 systems : Texmaker_5.0.3_Win_x64.msi</li>
+		      		<li>Now click <strong>Save</strong> File when the popup window opens.</li>
+		      		<li>Find where the file was saved and double click on it</li>
+		      		<li>Windows will ask "Unknown publisher, install anyway?". Click <strong>run</strong></li>
+		      		<li>The Setup wizard will now open.  Click the box <strong>I accept</strong> then click <strong>Install</strong></li>
+		      		<img src="images/install_windows6_2.png" class="instruction_img">
+		      		<li>Click <strong>Close</strong> once the installation is complete</li>
+		      	</ol>
+		      	<h6 class="instruction_header">Setting up Texmaker environment</h6>
+		      	<ol class="instruction_list">
+		      		<li>Open Texmaker</li>
+		      		<li>Change the document configuration to <strong>PDFLaTeX</strong> and <strong>View PDF</strong></li>
+		      		<img src="images/install_windows2_3.png" class="instruction_img">
+		      		<li>Under <strong>Options</strong>, open <strong>Configure Texmaker</strong></li>
+		      		<img src="images/install_windows3_3.png" class="instruction_img">
+		      		<li>In <strong>Editor</strong>, change <strong>Editor Font Encoding</strong> to UTF-8</li>
+		      		<img src="images/install_windows4_3.png" class="instruction_img">
+		      		<li>In <strong>Commands</strong>, change the content of LaTeX to be <strong>"~/miktex/bin/x64/tex.exe"-interaction=nonstopmode %.tex</strong><br>Replace ~ in the beginning with your installation address for MiKTeX. The default value for ~ is <strong>C:/Program Files/MiKTeX 2.9</strong></li>
+		      		<img src="images/install_windows5_3.png" class="instruction_img">
+		      		<li>In <strong>Commands</strong>, change the content of PDFLaTeX  to be <strong>"~/miktex/bin/x64/tex.exe" -interaction=nonstopmode %.tex</strong><br>Replace ~ in the beginning with your installation address for MiKTeX. The default value for ~ is <strong>C:/Program Files/MiKTeX 2.9</strong></li>
+		      		<img src="images/install_windows6_3.png" class="instruction_img">
+		      		<li>Click <strong>OK</strong> and you are all set!</li>
+		      	</ol>
+		      </div>
+		    </li>
+		    <li>
+		      <div class="collapsible-header">Mac</div>
+		      <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+		    </li>
+		    <li>
+		      <div class="collapsible-header">Online (Overleaf)</div>
+		      <div class="collapsible-body">
+		      	<ol class="instruction_list">
+		      		<li>Go to <a target="_blank" href="https://www.overleaf.com/login">https://www.overleaf.com/login</a></li>
+		      		<li>Continue with “Log in with Google” and log in with your Andrew email</li>
+		      		<li>After logging in, in “Account -&gt; Account Settings”, you can verify your Andrew email and start the Professional account for free</li>
+		      		<li>In “Projects”, click “New Project” and start to use! The LaTeX document will be automatically complied upon save</li>
+		      	</ol>
+		      </div>
+		    </li>
+  		</ul>
 
   	</div>
 </body>
