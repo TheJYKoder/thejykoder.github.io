@@ -16,6 +16,10 @@
 	font-size: 2em;
 }
 
+.collapsible-header:hover {
+	text-decoration: underline;
+}
+
 .pageTitle {
 	font-size: 3em;
 }

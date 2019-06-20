@@ -34,7 +34,7 @@
   			<p class="pageText">If you do want to install LaTeX locally, you will need:</p>
   			<ul>
   				<li class="pageText" style="list-style-type: square; margin-left: 7.5vw;">A text editor to create a LaTeX document (we’ll be using the freeware Texmaker)</li>
-  				<li class="pageText" style="list-style-type: square; margin-left: 7.5vw;">A LaTeX compiler (we'll be using MiKTeX)</li>
+  				<li class="pageText" style="list-style-type: square; margin-left: 7.5vw;">A LaTeX compiler (we'll be using MiKTeX for Windows and MacTex for Mac)</li>
   			</ul>
   		</div>
   		<ul class="collapsible">
@@ -56,7 +56,7 @@
 		      		<img src="images/install_windows8.png" class="instruction_img">
 		      		<li>Feel free to change preferred paper, then click <strong>Next</strong></li>
 		      		<img src="images/install_windows9.png" class="instruction_img">
-		      		<li>Click <strong>Start</strong> to being the install process</li>
+		      		<li>Click <strong>Start</strong> to begin the install process</li>
 		      		<img src="images/install_windows10.png" class="instruction_img">
 		      		<li>Click <strong>Close</strong> once the installation is complete</li>
 		      	</ol>
@@ -80,6 +80,8 @@
 		      		<img src="images/install_windows3_3.png" class="instruction_img">
 		      		<li>In <strong>Editor</strong>, change <strong>Editor Font Encoding</strong> to UTF-8</li>
 		      		<img src="images/install_windows4_3.png" class="instruction_img">
+		      		<li>In Commands, change Pdf Viewer to <strong>Built-in Viewer</strong> and <strong>Embed</strong>. You can also change to external viewer if you like</li>
+		      		<img src="images/windows5_3(added).png" class="instruction_img">
 		      		<li>In <strong>Commands</strong>, change the content of LaTeX to be <strong>"~/miktex/bin/x64/tex.exe"-interaction=nonstopmode %.tex</strong><br>Replace ~ in the beginning with your installation address for MiKTeX. The default value for ~ is <strong>C:/Program Files/MiKTeX 2.9</strong></li>
 		      		<img src="images/install_windows5_3.png" class="instruction_img">
 		      		<li>In <strong>Commands</strong>, change the content of PDFLaTeX  to be <strong>"~/miktex/bin/x64/tex.exe" -interaction=nonstopmode %.tex</strong><br>Replace ~ in the beginning with your installation address for MiKTeX. The default value for ~ is <strong>C:/Program Files/MiKTeX 2.9</strong></li>
@@ -89,8 +91,29 @@
 		      </div>
 		    </li>
 		    <li>
-		      <div class="collapsible-header">Mac</div>
-		      <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+		      <div class="collapsible-header">Mac (Texmaker + MacTeX)</div>
+		      <div class="collapsible-body">
+		      	<h6 class="instruction_header">Downloading and installing MacTeX for Mac</h6>
+		      	<ol class="instruction_list">
+		      		<li>Go to <a href="https://tug.org/mactex/mactex-download.html" target="_blank">https://tug.org/mactex/mactex-download.html</a></li>
+		      		<li>Click the link called “MacTeX.pkg”</li>
+		      		<li>Once the .pkg has been installed, just run through the installer, accepting all default settings, and you’ll be setup!</li>
+		      	</ol>
+		      	<h6 class="instruction_header">Now you are ready to download the text editor, Texmaker for Mac</h6>
+		      	<ol class="instruction_list">
+		      		<li>Go to <a href="http://www.xm1math.net/texmaker/download.html" target="_blank">http://www.xm1math.net/texmaker/download.html</a></li>
+		      		<li>Now click under the appropriate platform. Click on texmaker-5.0.3.dmg</li>
+		      		<li>Once downloaded, install it like you would another application.</li>
+		      	</ol>
+		      	<h6 class="instruction_header">Setting up Texmaker environment</h6>
+		      	<ol class="instruction_list">
+		      		<li>Open Texmaker, head to the “Preferences” screen, click on <strong>texmaker</strong> in the menu bar and then select <strong>Preferences…</strong></li>
+		      		<li>In the Preferences pane, under <strong>Commands</strong>, head to <strong>Pdf Viewer</strong> box and select the <strong>Embed</strong> checkbox</li>
+		      		<img src="images/install_mac2_3.png" class="instruction_img">
+		      		<li>Close the Preferences pane by clicking <strong>OK</strong>. Now click on <strong>View</strong> in the menu bar and <u>uncheck</u> <strong>Structure</strong> and <u>check</u> <strong>Pdf Viewer</strong>.</li>
+		      		<img src="images/install_mac3_3.png" class="instruction_img" style="width: 20vw;">
+		      	</ol>
+		      </div>
 		    </li>
 		    <li>
 		      <div class="collapsible-header">Online (Overleaf)</div>
