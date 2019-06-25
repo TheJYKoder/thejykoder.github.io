@@ -14,6 +14,7 @@
 		  }); 
     </script>
 	<script async src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	<script src="js/getting_started.js"></script>
 </head>
 <body>
 	<h1 class="center">$$\textrm{21-127/21-128/15-151}\ \LaTeX\ \textrm{Guide}$$ </h1>
@@ -24,6 +25,7 @@
 	        <li class="active"><a href="getting_started.html">Getting Started</a></li>
 	        <li><a href="symbols.html">Symbols</a></li>
 	        <li><a href="proofs.html">Writing Proofs</a></li>
+	        <li><a href="citation.html">Acknowledgements</a></li>
 	      </ul>
 	    </div>
   	</nav>
@@ -38,8 +40,8 @@
   			</ul>
   		</div>
   		<ul class="collapsible">
-		    <li>
-		      <div class="collapsible-header">Windows (Texmaker + MikTeX)</div>
+		    <li id="link1">
+		      <div class="collapsible-header" onclick="alterArrows(0);"><span id="arrow1" class="startedListTri">&#9654;</span>Windows (Texmaker + MikTeX)</div>
 		      <div class="collapsible-body">
 		      	<h6 class="instruction_header">Downloading and installing MiKTeX for Windows</h6>
 		      	<ol class="instruction_list">
@@ -90,8 +92,8 @@
 		      	</ol>
 		      </div>
 		    </li>
-		    <li>
-		      <div class="collapsible-header">Mac (Texmaker + MacTeX)</div>
+		    <li id="link2">
+		      <div class="collapsible-header" onclick="alterArrows(1);"><span id="arrow2" class="startedListTri">&#9654;</span>Mac (Texmaker + MacTeX)</div>
 		      <div class="collapsible-body">
 		      	<h6 class="instruction_header">Downloading and installing MacTeX for Mac</h6>
 		      	<ol class="instruction_list">
@@ -115,8 +117,8 @@
 		      	</ol>
 		      </div>
 		    </li>
-		    <li>
-		      <div class="collapsible-header">Online (Overleaf)</div>
+		    <li id="link3">
+		      <div class="collapsible-header" onclick="alterArrows(2);"><span id="arrow3" class="startedListTri">&#9654;</span>Online (Overleaf)</div>
 		      <div class="collapsible-body">
 		      	<ol class="instruction_list">
 		      		<li>Go to <a target="_blank" href="https://www.overleaf.com/login">https://www.overleaf.com/login</a></li>

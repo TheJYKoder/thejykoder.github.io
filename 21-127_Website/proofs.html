@@ -20,10 +20,60 @@
 	        <li><a href="getting_started.html">Getting Started</a></li>
 	        <li><a href="symbols.html">Symbols</a></li>
 	        <li class="active"><a href="proofs.html">Writing Proofs</a></li>
+	        <li><a href="citation.html">Acknowledgements</a></li>
 	      </ul>
 	    </div>
   	</nav>
   	<div>
+  		<div class="row">
+  			<div class="col offset-s1 s10">
+  				<h3>Two Modes</h3>
+  				<ul>
+	  				<li style="list-style-type: square; margin-left: 3vw; "><strong>Text mode</strong> is the default mode, where everything appears as normal text. You should use this mode for anything that is not mathematical notation.</li>
+	  				<li style="list-style-type: square; margin-left: 3vw;"><strong>Math mode</strong> should be used when typing any mathematical notation, including variables, numbers, functions, sets, etc. </li>
+	  			</ul>
+	  			<p style="margin-left: 3vw;">You can enter math mode in two ways:</p>
+	  			<ol>
+	  				<li>Enclose mathematical notation with dollar sign ($), which will create in line math environment. For example, $E=mc^2$ will display \(E=mc^2\)</li>
+	  				<li>Enclose mathematical notation with double dollar sign \($$\), which will create a separate line of math environment. For example, \(\textrm{\$\$a^2+b^2=c^2=ab+ba+ca\$\$}\) will display $$a^2+b^2=c^2=ab+ba+ca$$</li>
+	  			</ol>
+	  			<p>You can use \text{…} to type normal text in math mode. For example, $$\textrm{\$\$\sum_{i=1}^n I = \frac{n(n+1)}{2} \text{ for all } n \in \mathbb{N}\$\$}$$ will display $$\sum_{i=1}^n I = \frac{n(n+1)}{2} \text{ for all } n \in \mathbb{N}$$
+	  			</p>
+	  			<p>
+	  				<strong>Note:</strong>There are spaces before and after “for all” since math mode will ignore spacing. However, a space can be force by having a backslash before a space. For example, $a b$ will display \(ab\) while $a\ b$ will display \(a\ b\).
+	  			</p>
+  			</div>
+  		</div>
+  		<div class="row">
+  			<div class="col offset-s1 s10">
+  				<h3>Formatting</h3>
+  				<ul>
+  					<li style="list-style-type: square; margin-left: 3vw;">Work can be split into sections, subsections, subsubsections, and subsubsubsections by using \section{title} or \section*{title}. The former includes a section number while the latter does not.</li>
+  					<li style="list-style-type: square; margin-left: 3vw;">Words</li>
+	  					<ul>
+	  						<li style="list-style-type: square; margin-left: 5vw;">In <strong>text mode</strong></li>
+		  						<ul>
+		  							<li class="thirdLi" style="list-style-type: square;">\textbf{sample</li>
+		  							<li class="thirdLi" style="list-style-type: square;">\textit{sample}</li>
+		  							<li class="thirdLi" style="list-style-type: square;">\texttt{sample}</li>
+		  							<li class="thirdLi" style="list-style-type: square;">\textsf{sample}</li>
+		  							<li class="thirdLi" style="list-style-type: square;">\underline{sample}</li>
+		  							<li class="thirdLi" style="list-style-type: square;">\tilde{sample}</li>
+		  						</ul>
+	  						<li style="list-style-type: square; margin-left: 5vw;">In <strong>math mode</strong></li>
+		  						<ul>
+		  							<li class="thirdLi" style="list-style-type: square;">\mathrm{AaBbCc}</li>
+		  							<li class="thirdLi" style="list-style-type: square;">\mathbf{AaBbCc}</li>
+		  							<li class="thirdLi" style="list-style-type: square;">\mathsf{AaBbCc}</li>
+		  							<li class="thirdLi" style="list-style-type: square;">\mathbb{AaBbCc}</li>
+		  							<li class="thirdLi" style="list-style-type: square;">\mathfrak{AaBbCc}</li>
+		  							<li class="thirdLi" style="list-style-type: square;">\mathcal{AaBbCc}</li>
+		  						</ul>
+	  					</ul>
+	  				<li style="list-style-type: square;">Bullet Lists<br>\begin{itemize}<br>\item First line.<br>\item Lists within lists:<br>	\begin{itemize}<br>\item Like this.<br>\item Cool!<br>\item Last line.<br>\end{\itemize}</li>
+  				</ul>
+  			</div>
+  		</div>
   	</div>
 </body>
 </html>
