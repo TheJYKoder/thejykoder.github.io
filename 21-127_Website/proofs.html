@@ -8,8 +8,10 @@
     <!-- Compiled and minified JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script async src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
-    
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML, js/MathJax.js">
+    	
+    </script>
+    <script type="text/javascript" src=""></script>
 </head>
 <body>
 	<h1 class="center">$$\textrm{21-127/21-128/15-151}\ \LaTeX\ \textrm{Guide}$$ </h1>
@@ -48,31 +50,175 @@
   			<div class="col offset-s1 s10">
   				<h3>Formatting</h3>
   				<ul>
-  					<li style="list-style-type: square; margin-left: 3vw;">Work can be split into sections, subsections, subsubsections, and subsubsubsections by using \section{title} or \section*{title}. The former includes a section number while the latter does not.</li>
-  					<li style="list-style-type: square; margin-left: 3vw;">Words</li>
-	  					<ul>
-	  						<li style="list-style-type: square; margin-left: 5vw;">In <strong>text mode</strong></li>
-		  						<ul>
-		  							<li class="thirdLi" style="list-style-type: square;">\textbf{sample</li>
-		  							<li class="thirdLi" style="list-style-type: square;">\textit{sample}</li>
-		  							<li class="thirdLi" style="list-style-type: square;">\texttt{sample}</li>
-		  							<li class="thirdLi" style="list-style-type: square;">\textsf{sample}</li>
-		  							<li class="thirdLi" style="list-style-type: square;">\underline{sample}</li>
-		  							<li class="thirdLi" style="list-style-type: square;">\tilde{sample}</li>
-		  						</ul>
-	  						<li style="list-style-type: square; margin-left: 5vw;">In <strong>math mode</strong></li>
-		  						<ul>
-		  							<li class="thirdLi" style="list-style-type: square;">\mathrm{AaBbCc}</li>
-		  							<li class="thirdLi" style="list-style-type: square;">\mathbf{AaBbCc}</li>
-		  							<li class="thirdLi" style="list-style-type: square;">\mathsf{AaBbCc}</li>
-		  							<li class="thirdLi" style="list-style-type: square;">\mathbb{AaBbCc}</li>
-		  							<li class="thirdLi" style="list-style-type: square;">\mathfrak{AaBbCc}</li>
-		  							<li class="thirdLi" style="list-style-type: square;">\mathcal{AaBbCc}</li>
-		  						</ul>
-	  					</ul>
-	  				<li style="list-style-type: square;">Bullet Lists<br>\begin{itemize}<br>\item First line.<br>\item Lists within lists:<br>	\begin{itemize}<br>\item Like this.<br>\item Cool!<br>\item Last line.<br>\end{\itemize}</li>
+  					<li >Work can be split into sections, subsections, subsubsections, and subsubsubsections by using \section{title} or \section*{title}. The former includes a section number while the latter does not.</li>
   				</ul>
   			</div>
+  		</div>
+  		<div class="row">
+  			<h5 class="subhead">Words</h5>
+  			<div class="col offset-s1 s5">
+  				<h6>In <strong>Text Mode</strong></h6>
+  				<table class="proofTable">
+  					<tr>
+  						<td>Code</td>
+  						<td>Result</td>
+  					</tr>
+  					<tr>
+  						<td>\textbf{sample}</td>
+  						<td>$$\textbf{sample}$$</td>
+  					</tr>
+  					<tr>
+  						<td>\textit{sample}</td>
+  						<td>$$\textit{sample}$$</td>
+  					</tr>
+  					<tr>
+  						<td>\texttt{sample}</td>
+  						<td>$$\texttt{sample}$$</td>
+  					</tr>
+  					<tr>
+  						<td>\textsf{sample}</td>
+  					<td>$$\textsf{sample}$$</td>
+  					</tr>
+  					<tr>
+  						<td>\underline{sample}</td>
+  						<td>$$\underline{sample}$$</td>
+  					</tr>
+  					<tr>
+  						<td>\tilde{sample}</td>
+  						<td>$$\tilde{sample}$$</td>
+  					</tr>
+  				</table>
+  			</div>
+  			<div class="col s5">
+  				<h6>In <strong>Math Mode</strong></h6>
+  				<table class="proofTable">
+  					<tr>
+  						<td>Code</td>
+  						<td>Result</td>
+  					</tr>
+  					<tr>
+  						<td>\mathrm{AaBbCc}</td>
+  						<td>$$\mathrm{AaBbCc}$$</td>
+  					</tr>
+  					<tr>
+  						<td>\mathbf{AaBbCc}</td>
+  						<td>$$\mathbf{AaBbCc}$$</td>
+  					</tr>
+  					<tr>
+  						<td>\mathsf{AaBbCc}</td>
+  						<td>$$\mathsf{AaBbCc}$$</td>
+  					</tr>
+  					<tr>
+  						<td>\mathbb{AaBbCc}</td>
+  						<td>$$\mathbb{AaBbCc}$$</td>
+  					</tr>
+  					<tr>
+  						<td>\mathfrak{AaBbCc}</td>
+  						<td>$$\mathfrak{AaBbCc}$$</td>
+  					</tr>
+  					<tr>
+  						<td>\mathcal{AaBbCc}</td>
+  						<td>$$\mathcal{AaBbCc}$$</td>
+  					</tr>
+  				</table>
+  			</div>
+  		</div>
+  		<div class="row">
+  			<h5 class="subhead">Bulleted Lists</h5>
+  			<table>
+  				<tr>
+  					<td>Code</td>
+  					<td>Result</td>
+  				</tr>
+  				<tr>
+  					<td>
+  						$$\begin{itemize}
+							\item Like this.
+							\item Cool!
+							\item Last line.
+						\end{itemize}$$
+  					</td>
+  					<td>
+  						<img src="images/bullet_list.png">
+  					</td>
+  				</tr>
+  			</table>
+  		</div>
+  		<div class="row">
+  			<h5 class="subhead">Enumerated Lists</h5>
+  			<table>
+  				<tr>
+  					<td>Code</td>
+  					<td>Result</td>
+  				</tr>
+  				<tr>
+  					<td>
+  						\begin{enumerate}
+							\item First line.
+							\item Second line.
+							\item Third line.
+						\end{enumerate}
+  					</td>
+  					<td>
+  						<img src="images/enum_list.png">
+  					</td>
+  				</tr>
+  			</table>
+  		</div>
+  		<div class="row">
+  			<h5 class="subhead">Tables</h5>
+  			<p class="subhead_align">Tables can be created using the tabular environment. Column alignment and separation can be specified as an argument to command \begin{tabular}: write l, c or r to specify that a column should be aligned left, center or left. To separate columns by a single or double line, enter a single or double bar (| or ||).</p>
+  			<p class="subhead_align">Columns are then separated by ampersands (&) and a new row can be entered by a double-backslash (\\). To insert a horizontal line between two rows, simply enter \hline.</p>
+  			<table>
+  				<tr>
+  					<td>Code</td>
+  					<td>Result</td>
+  				</tr>
+  				<tr>
+  					<td>
+  						\begin{tabular}{c||ccc}
+							$\times$ & 1 & 2 & 3 \\ \hline
+							\hline
+							1 & 1 & 2 & 3 \\
+							2 & 2 & 4 & 6 \\
+							3 & 3 & 6 & 9 \\
+						\end{tabular}
+  					</td>
+  					<td>
+  						<img src="images/table.png">
+  					</td>
+  				</tr>
+  			</table>
+  		</div>
+  		<div class="row">
+  			<h5 class="subhead">Alignment</h5>
+  			<p class="subhead_align">In case a proof needs a sequence of intermediate equations, the environment align* can be used which behaves like the tabular environment.</p>
+  			<p class="subhead_align">New lines are introduced by inserting a double-backslash (\\), and the two columns are separated by an ampersand (&). The left column is aligned right and the right column is aligned left.</p>
+  			<table>
+  				<tr>
+  					<td>Code</td>
+  					<td>Result</td>
+  				</tr>
+  				<tr>
+  					<td>
+  						$$\text{\begin{align*}(n+1)!-n! & = (n+1)n!-n! \\& = n \cdot n! + n! – n! \\& = n \cdot n!\end{align*}}$$
+  					</td>
+  					<td>
+  						<img src="images/align.png">
+  					</td>
+  				</tr>
+  			</table>
+  			<p class="subhead_align"><strong>Note:</strong> align* environment automatically enters math mode, therefore \text{…} is needed for normal text enter.</p>
+  			<p class="subhead_align">More ampersands will create more columns. For example, to add annotations to each line, you can use a double-ampersand (&&).</p>
+  		</div>
+  		<div class="row">
+  			<h5 class="subhead">Some useful websites and more advanced techniques</h5>
+  			<ul>
+  				<li class="subhead_align"><a href="http://detexify.kirelabs.org/classify.html">http://detexify.kirelabs.org/classify.html</a> - handwritten LaTeX symbol recognition</li>
+  				<li class="subhead_align"><a href="http://tex.stackexchange.com">http://tex.stackexchange.com</a> – Q&A website for LaTeX</li>
+  				<li class="subhead_align"><a href="http://en.wikibooks.org/wiki/LaTeX"></a>http://en.wikibooks.org/wiki/LaTeX - online LaTeX manual</li>
+  			</ul>
+
   		</div>
   	</div>
 </body>

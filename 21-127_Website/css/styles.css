@@ -55,7 +55,23 @@ table {
 	color: blue;
 }
 
-.thirdLi {
-	list-style-type: square; display:list-item;
-	margin-left: 7vw;
+.proofList {
+
+}
+
+.proofTable {
+	margin-left: 0;
+	width: 80%;
+}
+w
+.proofTable td {
+	text-align: center;
+}
+
+.subhead {
+	margin-left: 8.55vw;
+}
+
+.subhead_align {
+	margin-left: 8.55vw;
 }
