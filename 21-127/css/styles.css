@@ -21,7 +21,7 @@
 }
 
 .pageTitle {
-	font-size: 3em;
+	font-size: 2.5em;
 }
 
 .pageText {
@@ -74,4 +74,12 @@ w
 
 .subhead_align {
 	margin-left: 8.55vw;
+}
+
+.websiteHeader {
+	font-size: 3em;
+}
+
+.image {
+	border-bottom: black solid 1px;
 }
